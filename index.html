@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic Google Map</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBehxmEDEFUnLi32dYLHIqsL8AqNgVugro"></script>
+    <style>
+        #map {
+            height: 100%; /* 設置地圖高度 */
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>let map;
+        let lat = 25.04166; // 初始緯度
+        let lon = 121.5526; // 初始經度
+        let zoom = 16; // 初始縮放級別
+
+        function initMap() {
+            const center = { lat: lat, lng: lon };
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: zoom,
+                center: center,
+            });
+
+            // 設置標記
+            const marker = new google.maps.Marker({
+                position: center,
+                map: map,
+                title: "Your Marker", // 標記的標題
+            });
+
+            // 監聽地圖變更事件
+            google.maps.event.addListener(map, 'center_changed', function () {
+                const center = map.getCenter();
+                lat = center.lat();
+                lon = center.lng();
+                console.log("Current Position:", lat, lon);
+            });
+        }
+        function updateMap(newLat, newLon) {
+            const newPosition = { lat: newLat, lng: newLon };
+            marker.setPosition(newPosition); // 更新標記位置
+            map.setCenter(newPosition); // 更新地圖中心
+        }
+        window.onload = initMap; // 在窗口加載時初始化地圖
+    </script>
+
+</body>
+</html>
